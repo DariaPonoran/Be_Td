@@ -1,6 +1,8 @@
 package com.example.demo.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,11 +29,11 @@ public class UserController {
                 .orElseThrow(()-> new UserNotFoundException(id));
     }
 
-   // @GetMapping ("/login")
-    //User getUserByEmailPassword(@RequestParam("email") String email,@RequestParam("password") String password){
-      //  return userRespository.
-        //        .orElseThrow(()-> new UserNotFoundException(id));
-    //}
+    @GetMapping ("/login/emailAndPassword")
+    ResponseEntity<List<User>> getUserByEmailPassword(@RequestParam String email, @RequestParam String password){
+        return new ResponseEntity<List<User>> (userRespository.findByEmailAndPassword(email, password), HttpStatus.OK);
+               // .orElseThrow(()-> new UserNotFoundException(email, password));
+    }
 
 
     @PutMapping("/user/{id}")
