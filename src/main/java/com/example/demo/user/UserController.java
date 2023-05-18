@@ -31,7 +31,9 @@ public class UserController {
 
     @GetMapping ("/login/emailAndPassword")
     ResponseEntity<List<User>> getUserByEmailPassword(@RequestParam String email, @RequestParam String password){
+        
         return new ResponseEntity<List<User>> (userRespository.findByEmailAndPassword(email, password), HttpStatus.OK);
+
                // .orElseThrow(()-> new UserNotFoundException(email, password));
     }
 
