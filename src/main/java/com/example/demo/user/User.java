@@ -1,8 +1,9 @@
 package com.example.demo.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.example.demo.book.Book;
+import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class User {
@@ -13,7 +14,16 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private Long bookId;
+
+
+
+    @ManyToMany
+    @JoinTable (
+            name="bookShelf",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="book_id")
+    )
+    Set<Book> likedBooks;
 
     public Long getId() {
         return id;
@@ -53,10 +63,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Long getBookId(){
-        return bookId;
-    }
-    public void setBookId(Long bookId){
-        this.bookId=bookId;
-    }
+
+
 }
