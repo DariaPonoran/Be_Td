@@ -1,14 +1,22 @@
 package com.example.demo.user;
 
 import com.example.demo.book.Book;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue()
     private Long id;
     private String username;
     private String name;
@@ -17,13 +25,14 @@ public class User {
 
 
 
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinTable (
             name="bookShelf",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="book_id")
     )
-    Set<Book> likedBooks;
+
+     private Set<Book> books;
 
     public Long getId() {
         return id;
