@@ -2,29 +2,31 @@ package com.example.demo.book;
 
 import com.example.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
-@Data
+
 @AllArgsConstructor
-@Getter
-@Setter
 @NoArgsConstructor
-@ToString
 @Entity
 
 public class Book {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long book_id;
     private String Name;
     private String Author;
 
 
-    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY)
-
+    @JsonIgnore
+    @ManyToMany(mappedBy = "books", fetch = FetchType.LAZY, cascade={
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    })
     private Set<User> users;
 
     public Long getBook_id() {
@@ -49,6 +51,13 @@ public class Book {
 
     public void setAuthor(String author) {
          Author = author;
+    }
+
+    public Set<User> getUsers(){
+        return users;
+    }
+    public void setUsers(Set<User> users){
+        this.users=users;
     }
 
 }

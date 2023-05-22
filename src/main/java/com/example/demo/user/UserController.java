@@ -1,11 +1,14 @@
 package com.example.demo.user;
 
+import com.example.demo.book.Book;
+import com.example.demo.book.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class UserController {
@@ -13,6 +16,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BookRepository bookRepository;
+
 
     @PostMapping("/user")
     User newUser(@RequestBody User newUser){
@@ -33,8 +39,6 @@ public class UserController {
     ResponseEntity<List<User>> getUserByEmailPassword(@RequestParam String email, @RequestParam String password){
         
         return new ResponseEntity<List<User>> (userRepository.findByEmailAndPassword(email, password), HttpStatus.OK);
-
-               // .orElseThrow(()-> new UserNotFoundException(email, password));
     }
 
 
@@ -58,4 +62,5 @@ public class UserController {
         userRepository.deleteById(id);
         return "User with id " +id+ " has been deleted.";
     }
+
 }

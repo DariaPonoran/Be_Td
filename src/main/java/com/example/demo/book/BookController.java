@@ -3,6 +3,8 @@ package com.example.demo.book;
 import com.example.demo.user.User;
 import com.example.demo.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 public class BookController {
     @Autowired
     private BookRepository bookRepository;
+
 
     @PostMapping("/book")
     Book newBook(@RequestBody Book newBook){ return bookRepository.save(newBook);}
@@ -34,6 +37,8 @@ public class BookController {
                     return bookRepository.save(book);
                 }).orElseThrow(()-> new UserNotFoundException(book_id));
     }
+
+
     @DeleteMapping("/book/{book_id}")
     String deleteBook(@PathVariable Long book_id){
         if(!bookRepository.existsById(book_id)){

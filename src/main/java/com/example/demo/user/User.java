@@ -1,31 +1,33 @@
 package com.example.demo.user;
 
 import com.example.demo.book.Book;
+import com.example.demo.book.BookNotFoundException;
+import com.example.demo.book.BookRepository;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+
 public class User {
     @Id
-    @GeneratedValue()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
     private String name;
     private String email;
     private String password;
 
-
-
-    @ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable (
             name="bookShelf",
             joinColumns = @JoinColumn(name="user_id"),
@@ -71,6 +73,26 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void addBook(Book book){
+        this.books.add(book);
+        /*if(book.getUsers()==null){
+            book.getUsers() = new HashSet<User>();
+        }*/
+        book.getUsers().add(this);
+    }
+
+    public void removeBook(Long book_id){
+       Book book= this.books.stream().filter(b-> Objects.equals(b.getBook_id(), book_id)).findAny()
+                .orElseThrow(()->new BookNotFoundException(book_id));
+        System.out.println(book);
+        if(book!=null){
+            System.out.println("merge2");
+            this.books.remove(book);
+            book.getUsers().remove(this);
+            System.out.println("merge");
+        }
     }
 
 
