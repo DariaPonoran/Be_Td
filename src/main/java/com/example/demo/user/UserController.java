@@ -24,6 +24,20 @@ public class UserController {
     User newUser(@RequestBody User newUser){
         return userRepository.save(newUser);
     }
+    @PostMapping("/signin")
+    User createUser(@RequestBody User newUser){
+        if(!newUser.getPassword().equals(newUser.getPasswordConffirmation())){
+            throw new WrongPasswordConffirmationException();
+        }
+        else {
+            User user=new User();
+            user.setEmail(newUser.getEmail());
+            user.setPassword(newUser.getPassword());
+            user.setPasswordConffirmation(newUser.getPasswordConffirmation());
+            return userRepository.save(user);
+        }
+    }
+
     @GetMapping("/users")
     List<User> getAllUsers(){
         return userRepository.findAll();

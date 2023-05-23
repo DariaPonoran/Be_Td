@@ -18,6 +18,8 @@ public class BookController {
     @PostMapping("/book")
     Book newBook(@RequestBody Book newBook){ return bookRepository.save(newBook);}
 
+
+
     @GetMapping("/books")
     List<Book> getAllBooks(){
         return bookRepository.findAll();

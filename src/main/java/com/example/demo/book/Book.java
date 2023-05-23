@@ -4,6 +4,7 @@ import com.example.demo.user.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.HashSet;
@@ -16,9 +17,13 @@ import java.util.Set;
 
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue()
     private Long book_id;
+    @Column(unique = true)
+    @NotBlank
     private String Name;
+    @Column(unique = true)
+    @NotBlank
     private String Author;
 
 

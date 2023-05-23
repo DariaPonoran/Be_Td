@@ -2,14 +2,11 @@ package com.example.demo.user;
 
 import com.example.demo.book.Book;
 import com.example.demo.book.BookNotFoundException;
-import com.example.demo.book.BookRepository;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,12 +17,24 @@ import java.util.Set;
 
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue()
     private Long id;
+   @Column
     private String username;
+   @Column
     private String name;
+    @Column(unique = true)
+    @NotBlank
     private String email;
+    @Column(unique = true)
+    @NotBlank
     private String password;
+
+
+
+    @Column
+    @NotBlank
+    private String passwordConffirmation;
 
     @ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable (
@@ -93,6 +102,13 @@ public class User {
             book.getUsers().remove(this);
             System.out.println("merge");
         }
+    }
+    public String getPasswordConffirmation() {
+        return passwordConffirmation;
+    }
+
+    public void setPasswordConffirmation(String passwordConffirmation) {
+        this.passwordConffirmation = passwordConffirmation;
     }
 
 
