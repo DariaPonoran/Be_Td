@@ -29,9 +29,7 @@ public class User {
     @Column(unique = true)
     @NotBlank
     private String password;
-
-
-
+    
     @Column
     @NotBlank
     private String passwordConffirmation;

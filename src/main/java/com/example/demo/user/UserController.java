@@ -57,13 +57,11 @@ public class UserController {
 
 
     @PutMapping("/user/{id}")
-    User updateUser(@RequestBody User newUser, @PathVariable Long id){
+    User updateUser(@RequestBody UserUpdateDTO body, @PathVariable Long id){
         return userRepository.findById(id)
                 .map(user -> {
-                    user.setUsername(newUser.getUsername());
-                    user.setPassword(newUser.getPassword());
-                    user.setName(newUser.getName());
-                    user.setEmail(newUser.getEmail());
+                    user.setUsername(body.getUsername());
+                    user.setName(body.getName());
                     return userRepository.save(user);
                 }).orElseThrow(()-> new UserNotFoundException(id));
     }
