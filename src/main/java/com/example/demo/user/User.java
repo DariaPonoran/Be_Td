@@ -29,10 +29,10 @@ public class User {
     @Column(unique = true)
     @NotBlank
     private String password;
-    
+
     @Column
     @NotBlank
-    private String passwordConffirmation;
+    private String passwordConfirmation;
 
     @ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable (
@@ -101,12 +101,12 @@ public class User {
             System.out.println("merge");
         }
     }
-    public String getPasswordConffirmation() {
-        return passwordConffirmation;
+    public String getPasswordConfirmation() {
+        return passwordConfirmation;
     }
 
-    public void setPasswordConffirmation(String passwordConffirmation) {
-        this.passwordConffirmation = passwordConffirmation;
+    public void setPasswordConfirmation(String passwordConfirmation) {
+        this.passwordConfirmation = passwordConfirmation;
     }
 
 
